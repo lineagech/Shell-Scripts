@@ -1,5 +1,13 @@
 #!/bin/bash
 
+
+## Disable
+# change -E 0 ${USER}
+# passwd -l ${USER}
+# passwd -u ${USER}
+# usermod -s /sbin/nologin ${USER}
+
+
 # This script deletes a user
 
 # Run as root
