@@ -3,7 +3,7 @@
 # Make sure the script is being executed with superuser privileges.
 if [[ ${UID} -ne 0 ]]
 then
-  echo "Please run with sudo or as root."
+  echo "Please run with sudo or as root." >&2
   exit 1
 fi
 
@@ -28,7 +28,7 @@ SPECIALCHARACTER=$(echo "~!@#$%^&*()_+" | fold -w1 | shuf | head -c1)
 PASSWORD=${PASSWORD}${SPECIALCHARACTER}
 
 # Create the user with the password.
-useradd -c "${COMMENT}" -m ${USER_NAME}
+useradd -c "${COMMENT}" -m ${USER_NAME} &> /dev/null
 
 # Check to see if the useradd command succeeded.
 if [[ "${?}" -ne 0 ]]
@@ -39,12 +39,12 @@ fi
 
 # Set the password.
 #echo "Changing password for user ${USER_NAME}."
-echo "${PASSWORD}" | passwd --stdin ${USER_NAME}
+echo "${PASSWORD}" | passwd --stdin ${USER_NAME} &> /dev/null
 
 # Check to see if the passwd command succeeded.
 if [[ "${?}" -ne 0 ]]
 then
-  echo "The password for the account could not be set."
+  echo "The password for the account could not be set." >&2
   exit 1
 fi
 
@@ -52,7 +52,7 @@ fi
 # Force password change on first login.
 #echo "Expiring password for user ${USER_NAME}."
 
-passwd -f -e ${USER_NAME}
+passwd -f -e ${USER_NAME} &> /dev/null
 
 #echo "passwd: Success"
 # Display the username, password, and the host where the user was created.
